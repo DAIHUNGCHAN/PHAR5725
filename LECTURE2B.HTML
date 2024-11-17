@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pharmacist Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .options {
+      list-style: none;
+      padding: 0;
+    }
+    .options li {
+      margin: 5px 0;
+    }
+    .submit-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #result {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+      color: green;
+    }
+    .feedback {
+      margin-top: 20px;
+      font-size: 16px;
+      color: red;
+    }
+    .correct-answer {
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+  <h1>Role of the Pharmacist Quiz</h1>
+  <div id="quiz"></div>
+  <button class="submit-btn" onclick="checkAnswers()">Submit</button>
+  <div id="result"></div>
+  <div id="feedback"></div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the definition of Social Determinants of Health (SDOH) by WHO?",
+        options: [
+          "Factors affecting only genetic health outcomes",
+          "Conditions shaping daily life, including economic and social systems",
+          "Medical advancements ensuring health equity",
+          "Policies impacting healthcare technologies"
+        ],
+        correct: 1
+      },
+      {
+        question: "Which of the following is an example of SDOH?",
+        options: [
+          "Hospital infrastructure",
+          "Access to safe water",
+          "Medication availability",
+          "Technological advancements"
+        ],
+        correct: 1
+      },
+      {
+        question: "What does patient-centered care prioritize?",
+        options: [
+          "The disease and its outcomes",
+          "Economic policies affecting care",
+          "Patient and family experience",
+          "General population statistics"
+        ],
+        correct: 2
+      },
+      {
+        question: "Which principle is NOT part of patient-centered care?",
+        options: [
+          "Coordination and integration of care",
+          "Emotional support",
+          "Respect for values",
+          "Economic incentives for providers"
+        ],
+        correct: 3
+      },
+      {
+        question: "What is the main challenge in promoting health equity?",
+        options: [
+          "Overabundance of medical resources",
+          "Lack of standardized patient records",
+          "Social and economic disparities",
+          "Misuse of antibiotics in hospitals"
+        ],
+        correct: 2
+      },
+      {
+        question: "Why is primary healthcare essential according to the WHO?",
+        options: [
+          "It eliminates the need for secondary care",
+          "It provides universal access to first-level care",
+          "It focuses on rare diseases exclusively",
+          "It minimizes healthcare workforce needs"
+        ],
+        correct: 1
+      },
+      {
+        question: "What is the goal of antimicrobial stewardship programs?",
+        options: [
+          "Reduce inappropriate antibiotic use",
+          "Increase the cost of antibiotics",
+          "Promote over-the-counter antibiotic sales",
+          "Encourage self-medication practices"
+        ],
+        correct: 0
+      },
+      {
+        question: "What is the key feature of community-based care?",
+        options: [
+          "High-cost treatment plans",
+          "Hospital-centric service delivery",
+          "Accessibility and patient participation",
+          "Replacement of allied health services"
+        ],
+        correct: 2
+      },
+      {
+        question: "Which stakeholder ensures regulatory standards in healthcare systems?",
+        options: [
+          "Consumer advocacy groups",
+          "Regulatory bodies",
+          "Health insurers",
+          "Pharmaceutical manufacturers"
+        ],
+        correct: 1
+      },
+      {
+        question: "Why are essential medicines critical?",
+        options: [
+          "They satisfy luxury healthcare needs",
+          "They address priority health care requirements",
+          "They replace public health initiatives",
+          "They promote pharmaceutical innovations"
+        ],
+        correct: 1
+      },
+      {
+        question: "How does cost-utility analysis measure health outcomes?",
+        options: [
+          "Using quality-adjusted life years (QALYs)",
+          "By calculating medication costs",
+          "Through direct surveys with patients",
+          "Based on profit margins of pharmaceutical companies"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which organization oversees health inequities globally?",
+        options: [
+          "International Pharmaceutical Federation (FIP)",
+          "Pharmaceutical Benefits Scheme (PBS)",
+          "World Health Organization (WHO)",
+          "United Nations Children’s Fund (UNICEF)"
+        ],
+        correct: 2
+      },
+      {
+        question: "What is the primary focus of the WHO Declaration of Alma Ata?",
+        options: [
+          "Advancing hospital-based care",
+          "Ensuring health for all through primary care",
+          "Expanding medical research funding",
+          "Encouraging pharmaceutical marketing"
+        ],
+        correct: 1
+      },
+      {
+        question: "How can pharmacists reduce health inequities?",
+        options: [
+          "Focus only on urban health programs",
+          "Advocate for community engagement and health literacy",
+          "Prioritize high-cost medications",
+          "Promote unregulated medication usage"
+        ],
+        correct: 1
+      },
+      {
+        question: "Which is a public health application of pharmacists during pandemics?",
+        options: [
+          "Eliminating the use of vaccines",
+          "Supporting aged care staff in medication management",
+          "Replacing general practitioners in hospitals",
+          "Avoiding communication with healthcare providers"
+        ],
+        correct: 1
+      },
+      {
+        question: "What is an example of a global health challenge?",
+        options: [
+          "Universal access to luxury drugs",
+          "Limited access to essential medicines in developing nations",
+          "Excessive antibiotic use in developing nations",
+          "Overregulation of health programs"
+        ],
+        correct: 1
+      },
+      {
+        question: "What does 'quality use of medicines' entail?",
+        options: [
+          "Encouraging the most expensive treatments",
+          "Appropriate, safe, and effective use of medications",
+          "Replacing all healthcare providers with pharmacists",
+          "Promoting unproven alternative therapies"
+        ],
+        correct: 1
+      },
+      {
+        question: "How can pharmacists support health literacy?",
+        options: [
+          "Use complex medical jargon to educate patients",
+          "Provide culturally sensitive, clear information",
+          "Focus only on pharmaceutical professionals’ knowledge",
+          "Ignore communication barriers with patients"
+        ],
+        correct: 1
+      },
+      {
+        question: "What is a critical aspect of patient-centered care transitions?",
+        options: [
+          "Ensuring continuity and access to care",
+          "Limiting family involvement",
+          "Focusing solely on urban areas",
+          "Removing follow-up options"
+        ],
+        correct: 0
+      },
+      {
+        question: "Which economic principle evaluates health interventions?",
+        options: [
+          "Cost-year saved ratio",
+          "Cost-benefit analysis (CBA)",
+          "Drug reimbursement models",
+          "Supply chain logistics"
+        ],
+        correct: 1
+      }
+    ];
+
+    function loadQuiz() {
+      const quizDiv = document.getElementById("quiz");
+      questions.forEach((q, index) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question";
+        questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+
+        const optionsList = document.createElement("ul");
+        optionsList.className = "options";
+
+        q.options.forEach((option, i) => {
+          const listItem = document.createElement("li");
+          listItem.innerHTML = `<label><input type="radio" name="q${index}" value="${i}"> ${option}</label>`;
+          optionsList.appendChild(listItem);
+        });
+
+        questionDiv.appendChild(optionsList);
+        quizDiv.appendChild(questionDiv);
+      });
+    }
+
+    function checkAnswers() {
+      let score = 0;
+      let feedbackHtml = "";
+      questions.forEach((q, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        if (selected) {
+          const selectedValue = parseInt(selected.value);
+          if (selectedValue === q.correct) {
+            score++;
+          } else {
+            feedbackHtml += `<p class="feedback">Question ${index + 1}: Your answer was incorrect. The correct answer is <span class="correct-answer">${q.options[q.correct]}</span>.</p>`;
+          }
+        } else {
+          feedbackHtml += `<p class="feedback">Question ${index + 1}: No answer selected. The correct answer is <span class="correct-answer">${q.options[q.correct]}</span>.</p>`;
+        }
+      });
+
+      document.getElementById("result").innerText = `Your score: ${score}/${questions.length}`;
+      document.getElementById("feedback").innerHTML = feedbackHtml;
+    }
+
+    window.onload = loadQuiz;
+  </script>
+</body>
+</html>
