@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Public Health Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .options {
+      list-style: none;
+      padding: 0;
+    }
+    .options li {
+      margin: 5px 0;
+    }
+    .submit-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #result {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+      color: green;
+    }
+    .feedback {
+      margin-top: 20px;
+      font-size: 16px;
+      color: red;
+    }
+    .correct-answer {
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+  <h1>Public Health Quiz</h1>
+  <div id="quiz"></div>
+  <button class="submit-btn" onclick="checkAnswers()">Submit</button>
+  <div id="result"></div>
+  <div id="feedback"></div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the primary goal of public health, according to Winslow (1920)?",
+        options: [
+          "Treating individual diseases effectively",
+          "Preventing disease and prolonging life through organized efforts",
+          "Establishing universal healthcare systems",
+          "Ensuring pharmaceutical advancements globally"
+        ],
+        correct: 1
+      },
+      {
+        question: "Which of the following is NOT a principle of public health ethics?",
+        options: [
+          "Non-maleficence",
+          "Justice",
+          "Economic profit maximization",
+          "Proportionality"
+        ],
+        correct: 2
+      },
+      {
+        question: "The mission of public health is to:",
+        options: [
+          "Focus exclusively on individual healthcare needs",
+          "Maximize benefits for the largest population",
+          "Replace hospital care systems",
+          "Promote pharmaceutical sales"
+        ],
+        correct: 1
+      },
+      {
+        question: "What does 'justice' mean in public health ethics?",
+        options: [
+          "Avoiding all risks of harm",
+          "Treating all individuals equally with universal access to necessary goods",
+          "Supporting only majority populations",
+          "Promoting transparency in hospital policies"
+        ],
+        correct: 1
+      },
+      {
+        question: "What was James Lind’s contribution to public health?",
+        options: [
+          "Conducting the first RCT to treat scurvy",
+          "Discovering the bacterium causing cholera",
+          "Promoting environmental sanitation",
+          "Establishing quarantine measures"
+        ],
+        correct: 0
+      },
+      {
+        question: "The Bubonic Plague, also known as the Black Death, was primarily caused by:",
+        options: [
+          "Viruses spread through airborne transmission",
+          "Fleas carrying the bacterium Yersinia pestis",
+          "Contaminated water supplies",
+          "Improper medical practices in medieval Europe"
+        ],
+        correct: 1
+      },
+      {
+        question: "John Snow is known as the 'Father of Epidemiology' because:",
+        options: [
+          "He discovered vaccines for cholera",
+          "He systematically studied and traced cholera outbreaks to contaminated water",
+          "He promoted hospital-based healthcare",
+          "He focused on nutritional interventions"
+        ],
+        correct: 1
+      },
+      {
+        question: "What does the epidemiologic triad include?",
+        options: [
+          "Sanitation, vaccination, education",
+          "Host, agent, environment",
+          "Prevention, treatment, recovery",
+          "Nutrition, hygiene, quarantine"
+        ],
+        correct: 1
+      },
+      {
+        question: "Which historical public health intervention involved removing a water pump handle?",
+        options: [
+          "John Snow’s cholera investigation in London",
+          "James Lind’s scurvy prevention experiments",
+          "Quarantine during the Black Death",
+          "Polio eradication efforts"
+        ],
+        correct: 0
+      },
+      {
+        question: "What is a hallmark of 'New Public Health'?",
+        options: [
+          "Focus on curing infectious diseases",
+          "Addressing social and environmental determinants of health",
+          "Limiting healthcare to urban areas",
+          "Emphasizing hospital-based treatment exclusively"
+        ],
+        correct: 1
+      },
+      {
+        question: "What historical event led to the development of quarantine practices?",
+        options: [
+          "The Spanish Flu pandemic",
+          "The Bubonic Plague in 14th-century Europe",
+          "The discovery of penicillin",
+          "SARS outbreak in the 21st century"
+        ],
+        correct: 1
+      },
+      {
+        question: "The Public Health Act of 1848 in the United Kingdom was established to:",
+        options: [
+          "Improve motor vehicle safety",
+          "Promote vaccination against smallpox",
+          "Ensure sanitation and address environmental health",
+          "Control tobacco use"
+        ],
+        correct: 2
+      },
+      {
+        question: "Which pandemic is associated with 50 million deaths worldwide in 1918?",
+        options: [
+          "SARS",
+          "COVID-19",
+          "Influenza (Spanish Flu)",
+          "HIV/AIDS"
+        ],
+        correct: 2
+      },
+      {
+        question: "What is one significant achievement in public health during the 20th century?",
+        options: [
+          "Promotion of luxury healthcare programs",
+          "Eradication of smallpox",
+          "Implementation of hospital-only care",
+          "Discovery of environmental miasmas as disease sources"
+        ],
+        correct: 1
+      },
+      {
+        question: "What is the key characteristic of 'Old Public Health'?",
+        options: [
+          "Focus on chronic disease prevention",
+          "Addressing sanitation, infection, and malnutrition",
+          "Prioritizing mental health services",
+          "Creating policies for gun control"
+        ],
+        correct: 1
+      },
+      {
+        question: "Which of the following reflects modern public health practice?",
+        options: [
+          "Sole reliance on pharmacists for interventions",
+          "A multidisciplinary approach involving epidemiologists, statisticians, and sociologists",
+          "Elimination of individual autonomy in healthcare decisions",
+          "Exclusive focus on genetic research"
+        ],
+        correct: 1
+      },
+      {
+        question: "The primary prevention services offered by pharmacists include:",
+        options: [
+          "Screening for cancers and diabetes",
+          "Conducting smoking cessation programs and immunizations",
+          "Managing chronic disease complications",
+          "Replacing traditional healthcare systems"
+        ],
+        correct: 1
+      },
+      {
+        question: "Why was the Environmental Protection Agency (EPA) established in 1970?",
+        options: [
+          "To regulate tobacco usage globally",
+          "To address water supply, sanitation, and hygiene",
+          "To ensure environmental health and protection",
+          "To eradicate infectious diseases"
+        ],
+        correct: 2
+      },
+      {
+        question: "Which early concept of disease was developed by the Hippocratic Corpus?",
+        options: [
+          "Disease as a punishment from the gods",
+          "Disease as an imbalance in humors or fluids",
+          "Disease as the result of miasmas",
+          "Disease as exclusively genetic"
+        ],
+        correct: 1
+      },
+      {
+        question: "Which statement best defines public health?",
+        options: [
+          "The exclusive treatment of individual diseases",
+          "The prevention and promotion of health through organized efforts",
+          "The focus on hospital-based care systems",
+          "The elimination of chronic diseases worldwide"
+        ],
+        correct: 1
+      }
+    ];
+
+    function loadQuiz() {
+      const quizDiv = document.getElementById("quiz");
+      questions.forEach((q, index) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question";
+        questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+
+        const optionsList = document.createElement("ul");
+        optionsList.className = "options";
+
+        q.options.forEach((option, i) => {
+          const listItem = document.createElement("li");
+          listItem.innerHTML = `<label><input type="radio" name="q${index}" value="${i}"> ${option}</label>`;
+          optionsList.appendChild(listItem);
+        });
+
+        questionDiv.appendChild(optionsList);
+        quizDiv.appendChild(questionDiv);
+      });
+    }
+
+    function checkAnswers() {
+      let score = 0;
+      let feedbackHtml = "";
+      questions.forEach((q, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        if (selected) {
+          const selectedValue = parseInt(selected.value);
+          if (selectedValue === q.correct) {
+            score++;
+          } else {
+            feedbackHtml += `<p class="feedback">Question ${index + 1}: Your answer was incorrect. The correct answer is <span class="correct-answer">${q.options[q.correct]}</span>.</p>`;
+          }
+        } else {
+          feedbackHtml += `<p class="feedback">Question ${index + 1}: No answer selected. The correct answer is <span class="correct-answer">${q.options[q.correct]}</span>.</p>`;
+        }
+      });
+
+      document.getElementById("result").innerText = `Your score: ${score}/${questions.length}`;
+      document.getElementById("feedback").innerHTML = feedbackHtml;
+    }
+
+    window.onload = loadQuiz;
+  </script>
+</body>
+</html>
